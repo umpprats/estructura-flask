@@ -1,6 +1,5 @@
 name: Build Linux Container Image and Push to ACR
 env:
-  ACR_NAME: ${{ secrets.ACR_NAME }}
   REPO_NAME: ${{ github.event.repository.name }}
 on:
   workflow_dispatch:
@@ -12,12 +11,12 @@ jobs:
       run:
         shell: bash
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - uses: azure/docker-login@v1
       with:
-        login-server: $ACR_NAME
+        login-server: ${{ secrets.ACR_NAME }}
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t $ACR_NAME/$REPO_NAME:${{ github.sha }}
-        docker push $ACR_NAME/$REPO_NAME:${{ github.sha }}
+        docker build . -t ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
+        docker push ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
