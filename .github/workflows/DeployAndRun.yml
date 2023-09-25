@@ -40,6 +40,9 @@ jobs:
           acrName: ${{ secrets.ACR_NAME }}
           resourceGroup: umGroupResource
           containerAppName: my-estructura-flask
+          targetPort: 5000
+          acrUsername: ${{ secrets.REGISTRY_USERNAME }}
+          acrPassword: ${{ secrets.REGISTRY_PASSWORD }}
           imageToDeploy: ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
     - name: 'logout'
       run: |
