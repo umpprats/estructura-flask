@@ -37,7 +37,7 @@ jobs:
     - name: 'deploy Container App'
       uses: azure/container-apps-deploy-action@v1
       with:
-          acrName: ${{ secrets.ACR_NAME }}
+          registryUrl: umingsoftware.azurecr.io
           resourceGroup: umGroupResource
           containerAppName: my-estructura-flask
           targetPort: 5000
