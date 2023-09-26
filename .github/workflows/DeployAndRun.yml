@@ -16,11 +16,6 @@ jobs:
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v2
-    
-    - name: 'Login via Azure CLI'
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
      
     - name: 'Login via Docker'
       uses: azure/docker-login@v1
@@ -31,8 +26,20 @@ jobs:
     - run: |
         docker build . -t ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
         docker push ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    - name: 'deploy Container App'
+    - name: 'deploy Container Instance'
       uses: azure/aci-deploy@v1
       with:
         location: eastus
@@ -45,6 +52,8 @@ jobs:
         ports: 80
         cpu: 1
         memory: 1
+    
     - name: 'logout'
       run: |
         az logout
+      
