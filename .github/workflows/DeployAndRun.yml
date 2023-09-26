@@ -29,8 +29,8 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
-        docker push ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
+        docker build . -t ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
+        docker push ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
     
     - name: 'deploy Container App'
       uses: azure/aci-deploy@v1
@@ -38,8 +38,8 @@ jobs:
         location: eastus
         name: flask-estructura
         resource-group: umGroupResource
-        image: ${{ secrets.ACR_NAME }}/estructura-flask:${{ github.sha }}
-        dns-name-label: flask-4-estructura
+        image: ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
+        dns-name-label: flask-estructura-${{ github.run_id }}-${{ github.run_attempt }}
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
         ports: 80
