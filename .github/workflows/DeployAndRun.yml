@@ -39,7 +39,6 @@ jobs:
       with:
           registryUrl: umingsoftware.azurecr.io
           resourceGroup: umGroupResource
-          containerAppName: my-estructura-flask
           targetPort: 5000
           acrUsername: ${{ secrets.REGISTRY_USERNAME }}
           acrPassword: ${{ secrets.REGISTRY_PASSWORD }}
