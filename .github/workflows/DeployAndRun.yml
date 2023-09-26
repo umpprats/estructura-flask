@@ -49,7 +49,7 @@ jobs:
         dns-name-label: flask-estructura-${{ github.run_id }}-${{ github.run_attempt }}
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        ports: 80
+        ports: 5000
         cpu: 1
         memory: 1
     
