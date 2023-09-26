@@ -35,14 +35,18 @@ jobs:
         docker push ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
     
     - name: 'deploy Container App'
-      uses: azure/container-apps-deploy-action@v1
+      uses: azure/aci-deploy@v1
       with:
-          registryUrl: umingsoftware.azurecr.io
-          resourceGroup: umGroupResource
-          targetPort: 5000
-          acrUsername: ${{ secrets.REGISTRY_USERNAME }}
-          acrPassword: ${{ secrets.REGISTRY_PASSWORD }}
-          imageToDeploy: ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
+        location: eastus
+        name: mycontainer
+        resource-group: umGroupResource
+        image: ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
+        dns-name-label: flask-4-estructura
+        registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        ports: 80
+        cpu: 1
+        memory: 1
     - name: 'logout'
       run: |
         az logout
