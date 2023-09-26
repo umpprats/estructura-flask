@@ -38,7 +38,7 @@ jobs:
         location: eastus
         name: flask-estructura
         resource-group: umGroupResource
-        image: ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
+        image: ${{ secrets.ACR_NAME }}/estructura-flask:${{ github.sha }}
         dns-name-label: flask-4-estructura
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
