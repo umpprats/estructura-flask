@@ -20,9 +20,7 @@ jobs:
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
      
     - name: 'Login via Docker'
       uses: azure/docker-login@v1
@@ -38,7 +36,7 @@ jobs:
       uses: azure/aci-deploy@v1
       with:
         location: eastus
-        name: mycontainer
+        name: flask-estructura
         resource-group: umGroupResource
         image: ${{ secrets.ACR_NAME }}/$REPO_NAME:${{ github.sha }}
         dns-name-label: flask-4-estructura
