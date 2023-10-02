@@ -1,8 +1,11 @@
 name: Deploy and Run by Tags
 env:
   REPO_NAME: ${{ github.event.repository.name }}
+  IMAGE_VERSION: ${{ github.sha }}
 on:
   push:
+    branches:
+      - main
     tags: ['v*.*.*']
 
 permissions:
@@ -30,5 +33,35 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
+          echo "IMAGE_VERSION=${{ steps.tag.outputs.tag }}" >> $GITHUB_ENV
           docker build . -t ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ steps.tag.outputs.tag }}
           docker push ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ steps.tag.outputs.tag }}
+    deploy:
+      needs: build
+      runs-on: ubuntu-latest
+      defaults:
+        run:
+          shell: bash
+      steps:
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: 'deploy Container Instance'
+        uses: azure/aci-deploy@v1
+        with:
+          location: eastus
+          name: flask-estructura
+          resource-group: umGroupResource
+          image: ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ env.IMAGE_VERSION }}
+          dns-name-label: flask-estructura-${{ github.run_id }}-${{ github.run_attempt }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          ports: 5000
+          cpu: 1
+          memory: 1
+      
+      - name: 'logout'
+        run: |
+          az logout  
