@@ -20,7 +20,7 @@ jobs:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v2
         # usamos el action para obtener el tag que se ha creado en el push https://github.com/marketplace/actions/get-tag?version=v1.1.0
-      - name: Get tag
+      - name: 'Get tag'
         id: tag
         uses: dawidd6/action-get-tag@v1.1.0
         
@@ -31,7 +31,6 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          echo "IMAGE_VERSION=${{ steps.tag.outputs.tag }}" >> $GITHUB_ENV
           docker build . -t ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ steps.tag.outputs.tag }}
           docker push ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ steps.tag.outputs.tag }}
     deploy:
@@ -45,14 +44,16 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
+      - name: 'Get tag'
+        id: tag
+        uses: dawidd6/action-get-tag@v1.1.0
       - name: 'deploy Container Instance'
         uses: azure/aci-deploy@v1
         with:
           location: eastus
           name: flask-estructura
           resource-group: umGroupResource
-          image: ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ env.IMAGE_VERSION }}
+          image: ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ steps.tag.outputs.tag }}
           dns-name-label: flask-estructura-${{ github.run_id }}-${{ github.run_attempt }}
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
