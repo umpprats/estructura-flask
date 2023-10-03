@@ -27,6 +27,7 @@ jobs:
           with:
             sarif_file: snyk.sarif
     build:
+      needs: security
       runs-on: ubuntu-latest
       defaults:
         run:
