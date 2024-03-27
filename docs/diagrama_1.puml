@@ -1,0 +1,14 @@
+@startuml
+class User {
+    - username: str
+    - email: str
+    - password: str
+}
+
+class Role {
+    - name: str
+    - description: str
+}
+
+User -- Role
+@enduml
