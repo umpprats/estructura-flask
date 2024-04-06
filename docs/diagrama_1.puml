@@ -5,10 +5,19 @@ class User {
     - password: str
 }
 
+class UserData{
+    - name: str
+    - surname: str
+    - phone: str
+    - address: str
+    - city: str
+    - country: str
+}
+
 class Role {
     - name: str
     - description: str
 }
-
-User -- Role
+User "1" *--- "1" UserData : contiene
+User "m" o--o "n" Role
 @enduml
