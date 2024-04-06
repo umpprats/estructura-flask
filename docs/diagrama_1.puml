@@ -1,4 +1,4 @@
-@startuml
+@startuml Diagram de Clases
 class User {
     - username: str
     - email: str
