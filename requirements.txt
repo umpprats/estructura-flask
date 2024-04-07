@@ -1,6 +1,11 @@
-flask==3.0.0
+Flask==3.0.2
 flask-marshmallow==0.15.0
 marshmallow==3.20.1
 werkzeug>=3.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
 azure-monitor-opentelemetry==1.0.0
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
+Flask-SQLAlchemy==3.0.5
+SQLAlchemy==2.0.20
+Flask-Migrate==4.0.4
+psycopg2==2.9.7
+psycopg[binary]
