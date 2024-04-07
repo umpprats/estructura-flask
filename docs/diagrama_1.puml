@@ -1,4 +1,8 @@
 @startuml Diagram de Clases
+class Model {
+ clase de SQLAlchemy
+}
+
 class User {
     - username: str
     - email: str
@@ -18,6 +22,9 @@ class Role {
     - name: str
     - description: str
 }
+Model <|-- User
+Model <|-- Role
+Model <|-- UserData
 User "1" *--- "1" UserData : contiene
 User "m" o--o "n" Role
 @enduml
