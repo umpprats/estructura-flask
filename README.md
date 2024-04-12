@@ -32,3 +32,26 @@ https://pypi.org/project/mysql-connector-python/
 Referencia:
 - https://pypi.org/project/psycopg/
 - https://www.psycopg.org/psycopg3/docs/basic/install.html
+
+## Uso de Flask-Migrate
+**Flask-Migrate** es una extensión que nos permite manejar migraciones de bases de datos **SQLAlchemy** para aplicaciones desarrolladas en **Flask**.
+
+### Instalación
+Después de haber activado el entorno virtual *(venv)*, ejecutar en la terminal:
+ 
+`$ pip install Flask-Migrate`
+
+Para crear un repositorio de migración se debe ejecutar lo siguiente en la terminal:
+
+`$ flask db init`
+
+El anterior comando crea una carpeta *migrations* en proyecto en Flask. Para generar una migración inicial se debe ejecutar el siguiente comando:
+
+`$ flask db migrate -m "Migración Inicial"`
+
+Para generar los cambios descritos en el script de migración, hay que ejecutar:
+ 
+`$ flask db upgrade`
+
+Referencia:
+- https://flask-migrate.readthedocs.io/en/latest/
