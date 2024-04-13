@@ -55,3 +55,10 @@ Para generar los cambios descritos en el script de migración, hay que ejecutar:
 
 Referencia:
 - https://flask-migrate.readthedocs.io/en/latest/
+
+## Estructura del Proyecto
+Book Flask Web Development: https://www.oreilly.com/library/view/flask-web-development/9781491991725/
+
+- Project Structure: Page 75
+
+BluePrints: https://flask.palletsprojects.com/es/main/blueprints/
