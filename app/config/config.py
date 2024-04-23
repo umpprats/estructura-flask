@@ -37,4 +37,4 @@ def factory(app):
         'production': ProductionConfig
     }
     
-    return configuration[app];
+    return configuration[app]
