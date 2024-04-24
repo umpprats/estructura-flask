@@ -11,7 +11,8 @@ class User {
 
 class UserData{
     - name: str
-    - surname: str
+    - firstname: str
+    - lastname: str
     - phone: str
     - address: str
     - city: str

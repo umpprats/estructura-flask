@@ -5,7 +5,8 @@ from app import db
 class UserData(db.Model):
     __tablename__ = 'users_data'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    surname: str = db.Column(db.String(80), nullable=False)
+    firstname: str = db.Column(db.String(80), nullable=False)
+    lastname: str = db.Column(db.String(80), nullable=False)
     phone: str = db.Column(db.String(120), nullable=False)
     address: str = db.Column(db.String(120), nullable=False)
     city: str   = db.Column(db.String(120), nullable=False)
