@@ -37,8 +37,9 @@ class User(db.Model):
 
     @classmethod
     def find(cls, id: int) -> 'User':
-        return cls.query.get(id)
-
+        return db.session.get(cls, id)
+    
     @classmethod
     def find_by(cls, **kwargs) -> List['User']:
         return cls.query.filter_by(**kwargs).all()
+

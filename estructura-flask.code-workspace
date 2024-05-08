@@ -4,5 +4,8 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"python.analysis.enablePytestSupport": false,
+		"python.testing.unittestEnabled": true
+	}
 }
