@@ -40,7 +40,7 @@ class UserTestCase(unittest.TestCase):
 
         self.assertTrue(user.email, self.EMAIL_PRUEBA)
         self.assertTrue(user.username, self.USERNAME_PRUEBA)
-        self.assertTrue(user.password, self.PASSWORD_PRUEBA)
+        self.assertTrue(user.check_password(self.PASSWORD_PRUEBA))
         self.assertIsNotNone(user.data)
         self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
         self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
@@ -55,7 +55,7 @@ class UserTestCase(unittest.TestCase):
         self.assertGreaterEqual(user.id, 1)
         self.assertTrue(user.email, self.EMAIL_PRUEBA)
         self.assertTrue(user.username, self.USERNAME_PRUEBA)
-        self.assertTrue(user.password, self.PASSWORD_PRUEBA)
+        self.assertTrue(user.check_password(self.PASSWORD_PRUEBA))
         self.assertIsNotNone(user.data)
         self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
         self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
