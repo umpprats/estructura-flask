@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List
 from .user_data import UserData
 from app import db
@@ -15,33 +15,3 @@ class User(db.Model):
     def __init__(self, user_data: UserData = None):
         self.data = user_data
     
-
-    """
-    Aplico el patrón Active Record https://www.martinfowler.com/eaaCatalog/activeRecord.html, donde el modelo se encarga de la persistencia de los datos.
-    Este patrón es muy útil para aplicaciones pequeñas y medianas, pero no es recomendable para aplicaciones grandes.
-    Puede llegar a contradecir los principios SOLID http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod, ya que el modelo tiene responsabilidades de persistencia y de negocio.
-    
-    """
-    def save(self):
-        db.session.add(self) 
-        db.session.commit()
-        return self
-    
-    def delete(self) -> None:
-        db.session.delete(self)
-        db.session.commit()
-    
-    @classmethod
-    def all(cls) -> List['User']:
-        return cls.query.all()
-
-    @classmethod
-    def find(cls, id: int) -> 'User':
-        return db.session.get(cls, id)
-    
-    @classmethod
-    def find_by(cls, **kwargs) -> List['User']:
-        return cls.query.filter_by(**kwargs).all()
-
-
-
