@@ -19,6 +19,10 @@ class UserData{
     - country: str
 }
 
+class Profile{
+    - name: str
+}
+
 class Role {
     - name: str
     - description: str
@@ -26,6 +30,9 @@ class Role {
 Model <|-- User
 Model <|-- Role
 Model <|-- UserData
+Model <|-- Profile
+
 User "1" *--- "1" UserData : contiene
+Profile "1" ---- "n" UserData
 User "m" o--o "n" Role
 @enduml

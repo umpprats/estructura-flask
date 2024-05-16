@@ -15,3 +15,7 @@ class UserData(db.Model):
     #Relacion Uno a Uno bidireccional con User
     #Flask Web Development Capitulo: Database Relationships Revisited Pag 49,149 
     user = db.relationship("User", back_populates='data', uselist=False)
+    
+    #Relacion Muchos a Uno bidireccional con Profile
+    profile_id = db.Column('profile_id', db.Integer, db.ForeignKey('profiles.id'))
+    profile = db.relationship("Profile", back_populates='data')
