@@ -132,3 +132,10 @@ bin/
 include/
 lib64
 pyvenv.cfg
+
+# add vscode settings
+.vscode/
+
+# add vscode workspace settings
+*.code-workspace
+
