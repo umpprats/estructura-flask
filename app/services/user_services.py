@@ -12,13 +12,16 @@ class UserService:
         self.__security = SecurityManager(WerkzeugSecurity())
 
     def save(self, user: User) -> User:
+        #TODO: Implementar auditoria
         user.password = self.__security.generate_password(user.password)
         return repository.save(user)
     
     def update(self, user: User, id: int) -> User:
+        #TODO: Implementar auditoria
         return repository.update(user, id)
     
     def delete(self, user: User) -> None:
+        #TODO: Implementar auditoria
         repository.delete(user)
     
     def all(self) -> List[User]:

@@ -27,10 +27,29 @@ class Role {
     - name: str
     - description: str
 }
+
+class AudiMixin{
+    - created_at: datetime
+    - updated_at: datetime
+    - created_by: int
+    - updated_by: int
+}
+
+class SoftDeleteMixin {
+    - deleted_at: datetime
+
+}
+
 Model <|-- User
+SoftDeleteMixin <|-- User
+AudiMixin <|-- User
 Model <|-- Role
 Model <|-- UserData
+SoftDeleteMixin <|-- UserData
+AudiMixin <|-- UserData
 Model <|-- Profile
+SoftDeleteMixin <|-- Profile
+AudiMixin <|-- Profile
 
 User "1" *--- "1" UserData : contiene
 Profile "1" ---- "n" UserData

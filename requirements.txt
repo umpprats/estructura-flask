@@ -11,3 +11,4 @@ psycopg2==2.9.7
 psycopg[binary]
 python-dotenv==1.0.1
 passlib==1.7.4 # Para demostrar Liskov Substitution Principle alternando con werkzeug.security
+sqlalchemy-easy-softdelete==0.8.3

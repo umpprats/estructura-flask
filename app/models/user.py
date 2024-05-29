@@ -1,11 +1,14 @@
 from dataclasses import dataclass
 from typing import List
+
+from app.models.audit_mixin import AuditMixin
+from app.models.soft_delete import SoftDeleteMixin
 from .user_data import UserData
 from app import db
 from app.models.relations import users_roles
 
 @dataclass(init=False, repr=True, eq=True)
-class User(db.Model):
+class User(SoftDeleteMixin, AuditMixin, db.Model):
     __tablename__ = 'users'
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username: str = db.Column(db.String(80), unique=True, nullable=False)

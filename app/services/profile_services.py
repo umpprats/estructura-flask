@@ -17,6 +17,7 @@ class ProfileService:
         :param profile: Profile
         :return: Profile
         """
+        #TODO: Implementar auditoria
         repository.save(profile)
         return profile
 
@@ -27,6 +28,7 @@ class ProfileService:
         :param id: int
         :return: Profile
         """
+        #TODO: Implementar auditoria
         repository.update(profile, id)
         return profile
 
@@ -35,6 +37,7 @@ class ProfileService:
         Delete a profile
         :param profile: Profile
         """
+        #TODO: Implementar auditoria
         repository.delete(profile)
 
     def all(self) -> List[Profile]:
