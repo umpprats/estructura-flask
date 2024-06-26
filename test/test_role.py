@@ -1,3 +1,4 @@
+import os
 import unittest
 from flask import current_app
 from app import create_app
@@ -10,6 +11,7 @@ role_service = RoleService()
 class RoleTestCase(unittest.TestCase):
 
     def setUp(self):
+        os.environ['FLASK_CONTEXT'] = 'testing'
         self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
@@ -28,23 +30,23 @@ class RoleTestCase(unittest.TestCase):
     
     def test_role(self):
         role = self.__get_role()
-        self.assertTrue(role.name, self.ROL_NAME)
-        self.assertTrue(role.description, self.ROL_DESCRIPCION)
+        self.assertEqual(role.name, self.ROL_NAME)
+        self.assertEqual(role.description, self.ROL_DESCRIPCION)
     
     def test_role_save(self):
         role = self.__get_role()
         role_service.save(role)
         self.assertGreaterEqual(role.id, 1)
-        self.assertTrue(role.name, self.ROL_NAME)
-        self.assertTrue(role.description, self.ROL_DESCRIPCION)
+        self.assertEqual(role.name, self.ROL_NAME)
+        self.assertEqual(role.description, self.ROL_DESCRIPCION)
     
     def test_role_update(self):
         role = self.__get_role()
         role_service.save(role)
         role.description = 'Administrator Updated'
         role_service.update(role, role.id)
-        self.assertTrue(role.name, self.ROL_NAME)
-        self.assertTrue(role.description, 'Administrator Updated')
+        self.assertEqual(role.name, self.ROL_NAME)
+        self.assertEqual(role.description, 'Administrator Updated')
     
     def test_role_delete(self):
         role = self.__get_role()
@@ -62,15 +64,15 @@ class RoleTestCase(unittest.TestCase):
         role = self.__get_role()
         role_service.save(role)
         role_find = role_service.find(role.id)
-        self.assertTrue(role_find.name, self.ROL_NAME)
-        self.assertTrue(role_find.description, self.ROL_DESCRIPCION)
+        self.assertEqual(role_find.name, self.ROL_NAME)
+        self.assertEqual(role_find.description, self.ROL_DESCRIPCION)
     
     def test_role_find_by_name(self):
         role = self.__get_role()
         role_service.save(role)
         role_find = role_service.find_by_name(self.ROL_NAME)
-        self.assertTrue(role_find.name, self.ROL_NAME)
-        self.assertTrue(role_find.description, self.ROL_DESCRIPCION)
+        self.assertEqual(role_find.name, self.ROL_NAME)
+        self.assertEqual(role_find.description, self.ROL_DESCRIPCION)
 
     def __get_role(self) -> Role:
         role = Role()

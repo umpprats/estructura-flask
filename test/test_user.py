@@ -1,3 +1,4 @@
+import os
 import unittest
 from flask import current_app
 from app.models import User, UserData
@@ -13,6 +14,7 @@ class UserTestCase(unittest.TestCase):
     YAGNI (You Aren't Gonna Need It) y SOLID (Single Responsibility Principle).
     """
     def setUp(self):
+
         self.USERNAME_PRUEBA = 'pabloprats'
         self.EMAIL_PRUEBA = 'test@test.com'
         self.PASSWORD_PRUEBA = '123456'
@@ -22,12 +24,12 @@ class UserTestCase(unittest.TestCase):
         self.PHONE_PRUEBA = '54260123456789'
         self.CITY_PRUEBA = 'San Rafael'
         self.COUNTRY_PRUEBA = 'Argentina'
-    
+        
+        os.environ['FLASK_CONTEXT'] = 'testing'
         self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
-       
 
     def tearDown(self):
         db.session.remove()
@@ -40,15 +42,15 @@ class UserTestCase(unittest.TestCase):
     def test_user(self):
         
         user = self.__get_user()
-
-        self.assertTrue(user.email, self.EMAIL_PRUEBA)
-        self.assertTrue(user.username, self.USERNAME_PRUEBA)
-        self.assertTrue(user.password, self.PASSWORD_PRUEBA)
+        
+        self.assertEqual(user.email, self.EMAIL_PRUEBA)
+        self.assertEqual(user.username, self.USERNAME_PRUEBA)
+        self.assertEqual(user.password, self.PASSWORD_PRUEBA)
         self.assertIsNotNone(user.data)
-        self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
-        self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
-        self.assertTrue(user.data.lastname, self.LASTNAME_PRUEBA)
-        self.assertTrue(user.data.phone, self.PHONE_PRUEBA) 
+        self.assertEqual(user.data.address, self.ADDRESS_PRUEBA)
+        self.assertEqual(user.data.firstname, self.FIRSTNAME_PRUEBA)
+        self.assertEqual(user.data.lastname, self.LASTNAME_PRUEBA)
+        self.assertEqual(user.data.phone, self.PHONE_PRUEBA) 
 
     def test_user_save(self):
         
@@ -57,15 +59,15 @@ class UserTestCase(unittest.TestCase):
         user_service.save(user)
         
         self.assertGreaterEqual(user.id, 1)
-        self.assertTrue(user.email, self.EMAIL_PRUEBA)
-        self.assertTrue(user.username, self.USERNAME_PRUEBA)
+        self.assertEqual(user.email, self.EMAIL_PRUEBA)
+        self.assertEqual(user.username, self.USERNAME_PRUEBA)
         self.assertIsNotNone(user.password)
         self.assertTrue(user_service.check_auth(user.username, self.PASSWORD_PRUEBA))
         self.assertIsNotNone(user.data)
-        self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
-        self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
-        self.assertTrue(user.data.lastname, self.LASTNAME_PRUEBA)
-        self.assertTrue(user.data.phone, self.PHONE_PRUEBA)
+        self.assertEqual(user.data.address, self.ADDRESS_PRUEBA)
+        self.assertEqual(user.data.firstname, self.FIRSTNAME_PRUEBA)
+        self.assertEqual(user.data.lastname, self.LASTNAME_PRUEBA)
+        self.assertEqual(user.data.phone, self.PHONE_PRUEBA)
     
     def test_user_delete(self):
         
@@ -74,7 +76,7 @@ class UserTestCase(unittest.TestCase):
         user_service.save(user)
 
         #borro el usuario
-        user_service.delete(user)
+        user_service.delete(user.id)
         self.assertIsNone(user_service.find(user))
     
     def test_user_all(self):
@@ -105,11 +107,12 @@ class UserTestCase(unittest.TestCase):
         data.city = self.CITY_PRUEBA
         data.country = self.COUNTRY_PRUEBA
         
-        user = User(data)
+        user = User()
+        user.data = data
         user.username = self.USERNAME_PRUEBA
         user.email = self.EMAIL_PRUEBA
         user.password = self.PASSWORD_PRUEBA
-
+        
         return user
 
 if __name__ == '__main__':

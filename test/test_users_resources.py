@@ -1,10 +1,10 @@
 import os
 import unittest
-from sqlalchemy import text
+from flask import current_app
+from app import create_app
 from app import create_app, db
 
-
-class ConnectionTestCase(unittest.TestCase):
+class UserResourceTestCase(unittest.TestCase):
 
     def setUp(self):
         os.environ['FLASK_CONTEXT'] = 'testing'
@@ -17,11 +17,8 @@ class ConnectionTestCase(unittest.TestCase):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
-
-    # test connection to db
-    def test_db_connection(self):
-        result = db.session.query(text("'Hello world'")).one()
-        self.assertEqual(result[0], 'Hello world')
     
-if __name__ == '__main__':
-    unittest.main()
+    def test_users(self):
+        client = self.app.test_client(use_cookies=True)
+        response = client.get('http://localhost:5000/api/v1/users')
+        self.assertEqual(response.status_code, 200)

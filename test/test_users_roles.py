@@ -1,3 +1,4 @@
+import os
 import unittest
 from flask import current_app
 from app import create_app
@@ -11,6 +12,7 @@ user_service = UserService()
 class UsersRoleTestCase(unittest.TestCase):
     
         def setUp(self):
+            os.environ['FLASK_CONTEXT'] = 'testing'
             self.app = create_app()
             self.app_context = self.app.app_context()
             self.app_context.push()
@@ -44,10 +46,10 @@ class UsersRoleTestCase(unittest.TestCase):
             role_service.save(role)
 
             self.assertGreaterEqual(role.id, 1)
-            self.assertTrue(role.name, self.ROL_ADMIN)
-            self.assertTrue(role.description, self.ROL_ADMIN_DESC)
+            self.assertEqual(role.name, self.ROL_ADMIN)
+            self.assertEqual(role.description, self.ROL_ADMIN_DESC)
             self.assertGreaterEqual(len(role.users) , 1)
-            self.assertTrue(role.users[0].username, self.USERNAME_PRUEBA)
+            self.assertEqual(role.users[0].username, self.USERNAME_PRUEBA)
         
         def test_user_save(self):
             user = self.__get_user()
@@ -56,17 +58,17 @@ class UsersRoleTestCase(unittest.TestCase):
             user_service.save(user)
             
             self.assertGreaterEqual(user.id, 1)
-            self.assertTrue(user.email, self.EMAIL_PRUEBA)
-            self.assertTrue(user.username, self.USERNAME_PRUEBA)
+            self.assertEqual(user.email, self.EMAIL_PRUEBA)
+            self.assertEqual(user.username, self.USERNAME_PRUEBA)
             self.assertIsNotNone(user.password)
             self.assertIsNotNone(user.data)
-            self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
-            self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
-            self.assertTrue(user.data.lastname, self.LASTNAME_PRUEBA)
-            self.assertTrue(user.data.phone, self.PHONE_PRUEBA)
+            self.assertEqual(user.data.address, self.ADDRESS_PRUEBA)
+            self.assertEqual(user.data.firstname, self.FIRSTNAME_PRUEBA)
+            self.assertEqual(user.data.lastname, self.LASTNAME_PRUEBA)
+            self.assertEqual(user.data.phone, self.PHONE_PRUEBA)
             self.assertGreaterEqual(len(user.roles) , 1)
-            self.assertTrue(user.roles[0].name, self.ROL_ADMIN)
-            self.assertTrue(user.roles[1].name, self.ROL_USER)
+            self.assertEqual(user.roles[0].name, self.ROL_ADMIN)
+            self.assertEqual(user.roles[1].name, self.ROL_USER)
     
         def __get_user(self):
             data = UserData()
@@ -77,7 +79,8 @@ class UsersRoleTestCase(unittest.TestCase):
             data.city = self.CITY_PRUEBA
             data.country = self.COUNTRY_PRUEBA
             
-            user = User(data)
+            user = User()
+            user.data = data
             user.username = self.USERNAME_PRUEBA
             user.email = self.EMAIL_PRUEBA
             user.password = self.PASSWORD_PRUEBA
