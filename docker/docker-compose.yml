@@ -1,0 +1,15 @@
+services:
+    estructura:
+        image: estructuraflask:v1.0.0
+        networks:
+          - mired
+        ports:
+          - 5000:5000
+        environment:
+          - FLASK_CONTEXT=${FLASK_CONTEXT}
+          - SQLALCHEMY_TRACK_MODIFICATIONS=${SQLALCHEMY_TRACK_MODIFICATIONS}  
+          - SQLALCHEMY_RECORD_QUERIES=${SQLALCHEMY_RECORD_QUERIES}
+          - PROD_DATABASE_URI=${PROD_DATABASE_URI}
+networks:
+    mired:
+        external: true
