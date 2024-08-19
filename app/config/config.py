@@ -10,6 +10,7 @@ class Config(object):
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
     
     @staticmethod
     def init_app(app):
