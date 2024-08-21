@@ -2,10 +2,8 @@ import logging
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token
 
-from app.mapping.response_schema import ResponseSchema
-from app.mapping.user_schema import UserSchema
-from app.services import UserService
-from app.services.response_message import ResponseBuilder
+from app.mapping import ResponseSchema, UserSchema 
+from app.services import UserService, ResponseBuilder
 
 auth = Blueprint('auth', __name__)
 

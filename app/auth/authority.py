@@ -48,7 +48,5 @@ def roles_required(roles: list[str]):
             if not is_allowed:
                 return jsonify(error='Access denied'), 403
             return fn(*args, **kwargs)
-
         return decorator
-
     return wrapper

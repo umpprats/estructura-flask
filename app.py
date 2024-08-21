@@ -13,5 +13,5 @@ if __name__ == '__main__':
     Ref: https://flask.palletsprojects.com/en/3.0.x/api/#flask.Flask.run
     Ref: Book Flask Web Development Page 9
     """
-    app.run(host="0.0.0.0", debug=False, port=5000)
+    app.run(host="0.0.0.0", debug=True, port=5000)
     
