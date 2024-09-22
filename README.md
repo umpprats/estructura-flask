@@ -62,3 +62,10 @@ Book Flask Web Development: https://www.oreilly.com/library/view/flask-web-devel
 - Project Structure: Page 75
 
 BluePrints: https://flask.palletsprojects.com/es/main/blueprints/
+
+## API REST
+- http://localhost:5000/swagger-ui/
+- Librerías utilizadas:
+    - flask-apispec 
+OpenAPI Specification: https://swagger.io/specification/
+

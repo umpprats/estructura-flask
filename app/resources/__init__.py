@@ -1,3 +1,3 @@
-from .home import home
-from .user import user
-from .auth import auth
+from .home_resource import home_bp
+from .user_resource import user_bp
+from .auth_resource import auth_bp

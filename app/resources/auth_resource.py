@@ -1,16 +1,25 @@
 import logging
 from flask import Blueprint, jsonify, request
+from flask_apispec import doc, marshal_with, use_kwargs
+from app import docs
 from flask_jwt_extended import create_access_token
 
 from app.mapping import ResponseSchema, UserSchema 
+from app.mapping.login_schema import LoginSchema
 from app.services import UserService, ResponseBuilder
 
-auth = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
+login_schema = LoginSchema()
 
-@auth.route("/login", methods=["POST"])
-def login():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
+@auth_bp.route("/login", methods=["POST"])
+@doc(description="Login de Usuario", tags=["Auth"])
+@use_kwargs(LoginSchema)
+@marshal_with(LoginSchema)
+def login(**kwargs):
+    user_login = login_schema.load(request.json)
+    username = user_login.get("username")
+    password = user_login.get("password")
+    logging.info(f"Login: {user_login}")
     user_schema = UserSchema()
     service = UserService()
     response_builder = ResponseBuilder()
@@ -26,7 +35,9 @@ def login():
     response_builder.add_message("Usuario No Autorizado").add_status_code(300).add_data({"message": "Error en Usuario y/o Password"})
     return response_schema.dump(response_builder.build()), 401
 
-@auth.route("/register", methods=["POST"])
+@auth_bp.route("/register", methods=["POST"])
+@doc(description="Registro de Usuario", tags=["Auth"])
+@marshal_with(UserSchema)
 def register():
     user_schema = UserSchema()
     service = UserService()

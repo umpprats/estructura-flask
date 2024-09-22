@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_apispec import FlaskApiSpec
 from flask_marshmallow import Marshmallow
 import os
 from flask_migrate import Migrate
@@ -11,6 +12,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 ma = Marshmallow()
 jwt = JWTManager()
+docs = FlaskApiSpec()
 
 def create_app() -> Flask:
     """
@@ -23,8 +25,9 @@ def create_app() -> Flask:
     app = Flask(__name__)
     f = config.factory(app_context if app_context else 'development')
     app.config.from_object(f)
+    docs.init_app(app)
     route = RouteApp()
-    route.init_app(app)
+    route.init_app(app, docs)
     ma.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
