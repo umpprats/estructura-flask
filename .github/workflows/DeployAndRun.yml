@@ -15,10 +15,10 @@ jobs:
         shell: bash
     steps:
     - name: 'Checkout GitHub Action'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
      
     - name: 'Login via Docker'
-      uses: azure/docker-login@v1
+      uses: azure/docker-login@v2
       with:
         login-server: ${{ secrets.ACR_NAME }}
         username: ${{ secrets.REGISTRY_USERNAME }}
@@ -35,7 +35,7 @@ jobs:
         shell: bash
     steps:
     - name: 'Login via Azure CLI'
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
