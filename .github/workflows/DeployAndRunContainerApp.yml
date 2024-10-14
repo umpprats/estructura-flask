@@ -24,7 +24,7 @@ jobs:
     - name: 'Deploy Container App'
       uses: azure/container-apps-deploy-action@v1
       with:
-        acrName: ${{ secrets.ACR_NAME }}
+        acrName: ingaplicada2024
         acrUsername: ${{ secrets.REGISTRY_USERNAME }}
         acrPassword: ${{ secrets.REGISTRY_PASSWORD }}
         location: eastus
