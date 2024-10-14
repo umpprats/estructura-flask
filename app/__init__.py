@@ -1,3 +1,4 @@
+import logging
 from flask import Flask
 from flask_apispec import FlaskApiSpec
 from flask_marshmallow import Marshmallow
@@ -20,7 +21,6 @@ def create_app() -> Flask:
     Ref: Book Flask Web Development Page 78
     """
     app_context = os.getenv('FLASK_CONTEXT')
-    print(f"app_context: {app_context}")
     #https://flask.palletsprojects.com/en/3.0.x/api/#flask.Flask
     app = Flask(__name__)
     f = config.factory(app_context if app_context else 'development')

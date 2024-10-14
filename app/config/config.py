@@ -59,7 +59,7 @@ class ProductionConfig(Config):
     def init_app(cls, app):
         Config.init_app(app)
 
-def factory(app):
+def factory(app: str) -> Config:
     configuration = {
         'testing': TestConfig,
         'development': DevelopmentConfig,
