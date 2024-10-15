@@ -26,13 +26,13 @@ jobs:
       with:
         appSourcePath: ${{ github.workspace }}
         dockerfilePath: Dockerfile
-        acrName: ingaplicada2024
+        acrName: ${{ secrets.ACR_NAME }}
         acrUsername: ${{ secrets.REGISTRY_USERNAME }}
         acrPassword: ${{ secrets.REGISTRY_PASSWORD }}
         location: eastus
         containerAppName: flask-estructura
-        resourceGroup: recurso-aplicada
-        imageToDeploy: ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
+        resourceGroup: ${{ secrets.AZURE_RESOURCE_GROUP }}
+        imageToDeploy: ${{ secrets.ACR_NAME_URL }}/${{env.REPO_NAME}}:${{ github.sha }}
         ingress: external
         targetPort: 5000
         

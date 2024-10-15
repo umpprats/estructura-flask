@@ -20,12 +20,12 @@ jobs:
     - name: 'Login via Docker'
       uses: azure/docker-login@v2
       with:
-        login-server: ${{ secrets.ACR_NAME }}
+        login-server: ${{ secrets.ACR_NAME_URL }}
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
-        docker push ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
+        docker build . -t ${{ secrets.ACR_NAME_URL }}/${{env.REPO_NAME}}:${{ github.sha }}
+        docker push ${{ secrets.ACR_NAME_URL }}/${{env.REPO_NAME}}:${{ github.sha }}
 
   deploy:
     needs: build
@@ -44,8 +44,8 @@ jobs:
       with:
         location: eastus
         name: flask-estructura
-        resource-group: recurso-aplicada
-        image: ${{ secrets.ACR_NAME }}/${{env.REPO_NAME}}:${{ github.sha }}
+        resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+        image: ${{ secrets.ACR_NAME_URL }}/${{env.REPO_NAME}}:${{ github.sha }}
         dns-name-label: flask-estructura-${{ github.run_id }}-${{ github.run_attempt }}
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
