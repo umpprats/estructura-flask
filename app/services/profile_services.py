@@ -1,6 +1,7 @@
 from typing import List
 from app.models import Profile
 from app.repositories import ProfileRepository
+from app import cache
 
 repository = ProfileRepository()
 
@@ -19,6 +20,7 @@ class ProfileService:
         """
         #TODO: Implementar auditoria
         repository.save(profile)
+        cache.set(f'profile_{profile.id}', profile, timeout=15)
         return profile
 
     def update(self, profile: Profile, id: int) -> Profile:
@@ -30,6 +32,7 @@ class ProfileService:
         """
         #TODO: Implementar auditoria
         repository.update(profile, id)
+        cache.set(f'profile_{profile.id}', profile, timeout=15)
         return profile
 
     def delete(self, profile: Profile) -> None:
@@ -38,6 +41,7 @@ class ProfileService:
         :param profile: Profile
         """
         #TODO: Implementar auditoria
+        cache.delete(f'profile_{profile.id}')
         repository.delete(profile)
 
     def all(self) -> List[Profile]:
@@ -45,7 +49,11 @@ class ProfileService:
         Get all profiles
         :return: List[Profile]
         """
-        return repository.all()
+        result = cache.get('profiles')
+        if result is None:
+            result = repository.all()
+            cache.set('profiles', result, timeout=15)
+        return result
 
     def find(self, id: int) -> Profile:
         """
@@ -53,5 +61,10 @@ class ProfileService:
         :param id: int
         :return: Profile
         """
-        return repository.find(id)
+        result = cache.get(f'profile_{id}')
+        if result is None:
+            result = repository.find(id)
+            cache.set(f'profile_{id}', result, timeout=15)
+        
+        return result 
     

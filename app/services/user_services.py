@@ -2,6 +2,7 @@ from typing import List
 from app.models import User
 from app.repositories import UserRepository
 from app.services import SecurityManager, WerkzeugSecurity
+from app import cache
 
 repository = UserRepository()
 
@@ -26,16 +27,29 @@ class UserService:
     def delete(self, id: int) -> None:
         #TODO: Implementar auditoria
         user = repository.find(id)
+        cache.delete(f'user_{user.id}')
         repository.delete(user)
     
     def all(self) -> List[User]:
-        return repository.all()
+        result = cache.get('users')
+        if result is None:
+            result = repository.all()
+            cache.set('users', result, timeout=15)
+        return result
     
     def find(self, id: int) -> User:
-        return repository.find(id)
+        result = cache.get(f'user_{id}')
+        if result is None:
+            result = repository.find(id)
+            cache.set(f'user_{id}', result, timeout=15)
+        return result
     
     def find_by_username(self, username: str):
-        return repository.find_by_username(username)
+        result = cache.get(f'user_{username}')
+        if result is None:
+            result = repository.find_by_username(username)
+            cache.set(f'user_{username}', result, timeout=15)
+        return result
     
     def find_by_email(self, email) -> User:
         return repository.find_by_email(email)

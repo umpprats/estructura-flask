@@ -2,11 +2,13 @@ import logging
 from flask import Flask
 from flask_apispec import FlaskApiSpec
 from flask_marshmallow import Marshmallow
+from flask_caching import Cache
 import os
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from app.route import RouteApp
 from app.config import config
+from app.config.cache_config import cache_config
 from flask_jwt_extended import JWTManager
 
 db = SQLAlchemy()
@@ -14,6 +16,7 @@ migrate = Migrate()
 ma = Marshmallow()
 jwt = JWTManager()
 docs = FlaskApiSpec()
+cache = Cache()
 
 def create_app() -> Flask:
     """
@@ -32,6 +35,7 @@ def create_app() -> Flask:
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
+    cache.init_app(app, config=cache_config)
     
     
     @app.shell_context_processor    

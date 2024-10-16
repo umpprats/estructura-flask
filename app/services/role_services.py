@@ -1,6 +1,7 @@
 from typing import List
 from app.models import Role
 from app.repositories import RoleRepository
+from app import cache
 
 repository = RoleRepository()
 
@@ -18,6 +19,7 @@ class RoleService:
         :return: Role
         """
         repository.save(role)
+        cache.set(f'role_{role.id}', role, timeout=15)
         return role
 
     def update(self, role: Role, id: int) -> Role:
@@ -28,6 +30,7 @@ class RoleService:
         :return: Role
         """
         repository.update(role, id)
+        cache.set(f'role_{role.id}', role, timeout=15)
         return role
 
     def delete(self, role: Role) -> None:
@@ -35,6 +38,7 @@ class RoleService:
         Delete a role
         :param role: Role
         """
+        cache.delete(f'role_{role.id}')
         repository.delete(role)
 
     def all(self) -> List[Role]:
@@ -42,7 +46,11 @@ class RoleService:
         Get all roles
         :return: List[Role]
         """
-        return repository.all()
+        result = cache.get('roles')
+        if result is None:
+            result = repository.all()
+            cache.set('roles', result, timeout=15)
+        return result
 
     def find(self, id: int) -> Role:
         """
@@ -50,7 +58,12 @@ class RoleService:
         :param role_id: int
         :return: Role
         """
-        return repository.find(id)
+        result = cache.get(f'role_{id}')
+        if result is None:
+            result = repository.find(id)
+            cache.set(f'role_{id}', result, timeout=15)
+        
+        return result 
 
     def find_by_name(self, name: str) -> Role:
         """
